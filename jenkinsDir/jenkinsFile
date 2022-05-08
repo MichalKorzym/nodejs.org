@@ -3,7 +3,7 @@
     tools{
         nodejs "18.1.0"
     }
-        }
+        
         stage("build") {
             steps {
                 echo "building.." 
@@ -30,13 +30,6 @@
             }
         }
         stage('publish') {
-		environment{
-			login = credentials("NPM-USERNAME")
-			password = credentials("NPM-PASSWORD")
-			email = credentials("NPM-EMAIL")
-			token = credentials("npm-token")
-			version = "${params.version}"
-		}
             steps {
                echo "publishing.."
 			    sh 'docker build . -f dockerfilePublish.dockerfile -t publish'
@@ -45,3 +38,4 @@
 
             }
         }
+    }
