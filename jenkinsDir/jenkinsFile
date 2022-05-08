@@ -5,16 +5,6 @@ pipeline {
     tools{
         nodejs "18.1.0"
     }
-	parameters {
-    string(name: 'version', defaultValue: '', description: 'app version')
-}
-
-    stages {
-        stage("npm-login-cli"){
-        steps{
-//           sh 'npm install -g npm-cli-login'
-        sh 'npm -v'
-        }
         }
         stage("build") {
             steps {
