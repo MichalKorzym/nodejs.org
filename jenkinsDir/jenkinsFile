@@ -1,6 +1,4 @@
-71 lines (66 sloc)  2.28 KB
-  
-pipeline {
+ pipeline {
     agent any
     tools{
         nodejs "18.1.0"
