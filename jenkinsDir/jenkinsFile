@@ -37,13 +37,6 @@ pipeline {
             }
         }
         stage('publish') {
-		environment{
-			login = credentials("NPM-USERNAME")
-			password = credentials("NPM-PASSWORD")
-			email = credentials("NPM-EMAIL")
-			token = credentials("npm-token")
-			version = "${params.version}"
-		}
             steps {
                echo "publishing.."
                //sh 'npm config set registry https://registry.npmjs.org/wiktor12v_nodejs:_auth=$token'
