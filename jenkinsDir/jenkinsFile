@@ -1,34 +1,25 @@
 pipeline {
-    agent any
-    tools{
-        nodejs "18.1.0"
-    }
 	parameters {
-    string(name: 'version', defaultValue: '', description: 'app version')
+    string(name: 'version')
+    string(name: 'programName')
 }
-
     stages {
-        stage("npm-login-cli"){
-        steps{
-//           sh 'npm install -g npm-cli-login'
-        sh 'npm -v'
-        }
-        }
         stage("build") {
             steps {
-                echo "building.." 
+                echo "build stage" 
 				   sh 'docker build . -f dockerfileBuild.dockerfile -t builder'
             }
         }
         stage('test') {
             steps {
+            echo "test stage"
 			  sh 'docker build . -f dockerfileTest.dockerfile -t tester'
 			  sh' docker run tester'
             }
         }
          stage('deploy') {
             steps {
-               echo 'deploying..'
+               echo 'deploy stage'
                  sh  'docker build . -f dockerfileDeploy.dockerfile -t deploy'
 				 sh 'docker stop $(docker ps -a -q)'
 				 sh 'docker run  -d -p 3000:80 deploy '
@@ -38,22 +29,11 @@ pipeline {
         }
         stage('publish') {
             steps {
-               echo "publishing.."
-               //sh 'npm config set registry https://registry.npmjs.org/wiktor12v_nodejs:_auth=$token'
-               //sh 'npm config set _auth $token'
-                //sh 'export NPM_USERNAME=$login'
-                //sh 'export NPM_EMAIL=$email'
-                //sh 'export NPM_PASSWORD=$password'
-                //sh 'npm adduser <<!$login $password $email!'
-                //sh 'git config --global user.email $email'
-                //sh 'git config --global user.name $login'
-               //sh 'npm version "1.8.0"'
-               //sh 'npm publish'
-			   //to moja nieudana próba zrobienia publisha na registry  :(
-				
+               echo "publish stage"
 			    sh 'docker build . -f dockerfilePublish.dockerfile -t publish'
-				sh "docker run --volume /var/jenkins_home/workspace/volumes:/final publish mv nodejs.tar.xz /final"
-				echo "NODEJS.ORG VERSION ${params.version} HAS BEEN PUBLISHED" 	
+				sh "docker run --volume /var/jenkins_home/workspace/volumes:/final publish mv nodejsorg.tar.xz /final"
+				echo "Nodejs version: ${params.version} published"
+                echo "Program name: ${params.programName}" 	
 
             }
         }
