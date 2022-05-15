@@ -1,4 +1,5 @@
 pipeline {
+    agent any
 	parameters {
     string(name: 'version')
     string(name: 'programName')
@@ -31,9 +32,9 @@ pipeline {
             steps {
                echo "publish stage"
 			    sh 'docker build . -f dockerfilePublish.dockerfile -t publish'
-				sh "docker run --volume /var/jenkins_home/workspace/volumes:/final publish mv nodejsorg.tar.xz /final"
+				sh "docker run --volume /var/jenkins_home/workspace/volumes:/final publish mv nodejs.tar.xz /final"
 				echo "Nodejs version: ${params.version} published"
-                echo "Program name: ${params.programName}" 	
+                echo "Program name ${params.programName}" 	
 
             }
         }
