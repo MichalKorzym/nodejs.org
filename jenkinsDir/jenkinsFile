@@ -22,9 +22,8 @@ pipeline {
             steps {
                echo 'deploy stage'
                  sh  'docker build . -f dockerfileDeploy.dockerfile -t deploy'
-				 sh 'docker stop $(docker ps -a -q)'
 				 sh 'docker run  -d -p 3000:80 deploy '
-				
+				 sh 'docker stop $(docker ps -a -q)'
 					                 
             }
         }
@@ -36,6 +35,17 @@ pipeline {
 				echo "Nodejs version: ${params.version} published"
                 echo "Program name ${params.programName}" 	
 
+            }
+        }
+        post{
+            success{
+                echo "Pipeline success!!!"
+            }
+            always{
+                echo "Pipeline end"
+            }
+            failure{
+                echo "ERROR, check your pipeline!!!"
             }
         }
     }
